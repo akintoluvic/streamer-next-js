@@ -63,7 +63,7 @@ export default function Text({
   return (
     <Tag className={combinedClasses} {...rest}>
       <slot name="left-icon" />
-      <slot />
+      {rest.children}
       <slot name="right-icon" />
     </Tag>
   );
