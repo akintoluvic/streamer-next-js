@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-
+import Footer from "@/components/global/Footer";
 
 const inter = Inter({
-  subsets: ['latin'],
-  display: 'swap',
-})
+  subsets: ["latin"],
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Your Page Title",
@@ -15,9 +15,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://yoursite.com/current-page",
     languages: {
-      'en-US': 'https://example.com/en-US',
-      'de-DE': 'https://example.com/de-DE'
-    }
+      "en-US": "https://example.com/en-US",
+      "de-DE": "https://example.com/de-DE",
+    },
   },
   openGraph: {
     url: "https://yoursite.com/current-page",
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     creator: "@yourhandle",
     site: "@yoursite",
     card: "summary_large_image",
-  }
+  },
 };
 
 export default function RootLayout({
@@ -51,9 +51,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={inter.className}
+        className={`${inter.className} bg-background dark:bg-neutral-950 p-8`}
       >
-        {children}
+        <main className="grow">{children}</main>
+        <Footer />
       </body>
     </html>
   );
