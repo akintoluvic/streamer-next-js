@@ -16,8 +16,9 @@ export interface TextProps {
     | "h6"; // Defines allowed HTML tags
   id?: string; // Optional 'id' attribute
   href?: string; // Optional 'href' attribute for anchor tags
-  class?: string; // Optional prop for additional custom classes
+  className?: string; // Optional prop for additional custom classes
   variant?: string; // Specifies the style variant of the text
+  children: React.ReactNode; // Children nodes
 }
 
 // Define text styles for each variant
@@ -50,7 +51,7 @@ const textStyles: Record<string, string> = {
 export default function Text({
   tag: Tag = "p", // Defaults to paragraph tag
   variant = "textMD", // Defaults to textMD style variant
-  class: className = "", // No additional classes by default
+  className = "", // No additional classes by default
   ...rest // Collect remaining props
 }: TextProps) {
   // Get the base classes for the specified variant
