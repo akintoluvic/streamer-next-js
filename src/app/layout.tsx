@@ -11,7 +11,14 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Your Page Title",
   description: "A detailed description of your page content.",
-  canonical: "https://yoursite.com/current-page",
+  keywords: ["keyword1", "keyword2", "keyword3"],
+  alternates: {
+    canonical: "https://yoursite.com/current-page",
+    languages: {
+      'en-US': 'https://example.com/en-US',
+      'de-DE': 'https://example.com/de-DE'
+    }
+  },
   openGraph: {
     url: "https://yoursite.com/current-page",
     title: "Your Page Title",
@@ -30,9 +37,9 @@ export const metadata: Metadata = {
     locale: "en_US",
   },
   twitter: {
-    handle: "@yourhandle",
+    creator: "@yourhandle",
     site: "@yoursite",
-    cardType: "summary_large_image",
+    card: "summary_large_image",
   }
 };
 
