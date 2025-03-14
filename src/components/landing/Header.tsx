@@ -2,6 +2,7 @@
 
 import Wrapper from "../foundations/containers/Wrapper";
 import Text from "../foundations/elements/Text";
+import { ModeToggle } from "../theme/mode-toggle";
 
 /// Podcasts platforms links
 const links = [
@@ -33,6 +34,7 @@ export default function Header() {
               {link.name}
             </Text>
           ))}
+          <ModeToggle />
         </div>
       </div>
     </Wrapper>
