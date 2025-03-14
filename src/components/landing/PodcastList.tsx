@@ -1,3 +1,4 @@
+"use client";
 // Fundations
 import Text from "../foundations/elements/Text";
 import Wrapper from "../foundations/containers/Wrapper";
@@ -31,6 +32,7 @@ import twentyFour from "../../../public/images/24.png";
 import twentyFive from "../../../public/images/25.png";
 import twentySix from "../../../public/images/26.png";
 import twentySeven from "../../../public/images/27.png";
+import { useRef } from "react";
 
 // Data
 const podcastData = [
@@ -944,6 +946,34 @@ const podcastData = [
 ];
 
 export default function PodcastList() {
+  const selected = useRef(-1);
+  const listO = useRef<HTMLDivElement>(null);
+
+  const togglePodcastDetails = (index: number) => {
+    if (!listO.current) return;
+
+    const currentSelected = selected.current;
+    const currentElement = listO.current.children[currentSelected];
+    const newElement = listO.current.children[index];
+
+    // Close open podcast row
+    if (currentSelected > -1) {
+      currentElement.classList.remove("active");
+      (currentElement.children[1] as HTMLElement).style.maxHeight = "0px";
+    }
+
+    if (currentSelected === index) {
+      selected.current = -1;
+    } else {
+      // Open new podcast row
+      selected.current = index;
+      newElement.classList.add("active");
+      (newElement.children[1] as HTMLElement).style.maxHeight = `${
+        (newElement.children[1] as HTMLElement).scrollHeight
+      }px`;
+    }
+  };
+
   return (
     <Wrapper variant="standard">
       <div className="grid grid-cols-4 md:grid-cols-6 gap-2 md:gap-4 py-4 text-sm border-b border-neutral-200 dark:border-neutral-900 text-black dark:text-neutral-400 font-serif">
@@ -954,10 +984,17 @@ export default function PodcastList() {
           Duration
         </div>
       </div>
-      <div className="project-list divide-y divide-neutral-200 dark:divide-neutral-900">
+      <div
+        ref={listO}
+        className="project-list divide-y divide-neutral-200 dark:divide-neutral-900"
+      >
         {/* Project rows  */}
         {podcastData.map((podcast, index) => (
-          <div className="group " key={index}>
+          <div
+            key={index}
+            className="group"
+            onClick={() => togglePodcastDetails(index)}
+          >
             <div className="grid grid-cols-4 md:grid-cols-6 gap-2 md:gap-4 font-serif py-4 cursor-pointer items-center text-black dark:text-neutral-400">
               <div>
                 <Text
@@ -1132,5 +1169,171 @@ export default function PodcastList() {
         ))}
       </div>
     </Wrapper>
+  );
+}
+function PodcastItem({
+  podcast,
+  index,
+  onClick,
+}: {
+  podcast: Podcast;
+  index: number;
+}) {
+  return (
+    <div className="group" onClick={() => onClick(index)}>
+      <div className="grid grid-cols-4 md:grid-cols-6 gap-2 md:gap-4 font-serif py-4 cursor-pointer items-center text-black dark:text-neutral-400">
+        <div>
+          <Text tag="p" variant="textBase" className="italic text-neutral-500 ">
+            {podcast.date}
+          </Text>
+        </div>
+        <div className="col-span-3">
+          <Text tag="p" variant="textBase" className="  tracking-wide">
+            {podcast.title}
+          </Text>
+        </div>
+        <div className="hidden md:block">
+          <Text tag="p" variant="textBase" className="italic">
+            {podcast.category}
+          </Text>
+        </div>
+        <div className="text-right text-neutral-500 hidden md:block italic">
+          <Text tag="p" variant="textBase">
+            {podcast.duration}
+          </Text>
+        </div>
+      </div>
+      <div className="overflow-hidden max-h-0 transition-[max-height] duration-500 ease-in-out">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 py-4 md:py-8">
+          <div className="md:col-span-2">
+            <Text
+              tag="p"
+              variant="textBase"
+              className="text-neutral-500 text-balance"
+            >
+              {podcast.description}
+            </Text>
+            <div className="mt-8">
+              <div className="flex">
+                <button
+                  id={`openModal-${index}`}
+                  className="text-xs h-10 bg-base-medium dark:bg-neutral-900 dark:text-white flex items-center gap-4 text-black rounded-full px-6"
+                >
+                  Read notes and Transcript <span>→</span>
+                </button>
+              </div>
+              <div className="mt-12">
+                <Text
+                  tag="p"
+                  variant="textBase"
+                  className="text-black italic font-serif"
+                >
+                  Listen on
+                </Text>
+                <Wrapper variant="prose">
+                  <ul role="list">
+                    {podcast.listenOn.map((platform) => (
+                      <li key={platform.name}>
+                        <Text
+                          tag="a"
+                          variant="textSM"
+                          href={platform.url}
+                          className="hover:underline"
+                        >
+                          {platform.name}
+                        </Text>
+                      </li>
+                    ))}
+                  </ul>
+                </Wrapper>
+              </div>
+            </div>
+          </div>
+          <div className=" md:col-start-3">
+            <Image
+              src={podcast.imagePath}
+              alt={podcast.title}
+              className=" w-full object-cover object-center"
+            />
+          </div>
+        </div>
+      </div>
+      <div
+        id={`modal-${index}`}
+        className="fixed inset-0 z-50 bg-base-light/10 dark:bg-neutral-900/80 overflow-y-auto scrollbar-hide h-full w-full hidden opacity-0 transition-opacity duration-300 ease-in-out"
+      >
+        <div className="absolute top-12 left-0 right-0 max-w-3xl mx-auto bg-base-medium dark:bg-neutral-900 shadow ring ring-neutral-200 dark:ring-neutral-800 transition-all duration-300 ease-in-out transform translate-y-full">
+          <button
+            id={`closeModal-${index}`}
+            className="absolute top-8 right-8 text-xs text-black dark:text-neutral-400"
+          >
+            Close
+          </button>
+          <div className="p-8 lg:p-12">
+            <div className="flex items-center gap-2 texrt-black dark:text-neutral-400">
+              <Text tag="p" variant="textBase" className="font-serif italic">
+                <span>{podcast.date}</span>
+              </Text>
+              <span>·</span>
+              <Text tag="p" variant="textBase" className="font-serif ">
+                <span>{podcast.title}</span>
+              </Text>
+              <span>·</span>
+              <Text tag="p" variant="textBase" className="font-serif italic">
+                <span>{podcast.category}</span>
+              </Text>
+              <span>·</span>
+              <Text tag="p" variant="textBase" className="font-serif italic">
+                <span>{podcast.duration}</span>
+              </Text>
+            </div>
+            <div className="grid grid-cols-1 mt-12 lg:grid-cols-2 gap-12">
+              <Wrapper variant="prose">
+                <div>
+                  <h3>Topics</h3>
+                  <ul>
+                    {podcast.topics.map((topic) => (
+                      <li key={topic}>{topic}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h3>Sponsors</h3>
+                  <ul>
+                    {podcast.sponsors.map((sponsor) => (
+                      <li key={sponsor.name}>
+                        <strong>{sponsor.name}</strong> —{sponsor.description}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h3>Links</h3>
+                  <ul>
+                    {podcast.links.map((link) => (
+                      <li key={link.label}>
+                        <a href={link.url} className="hover:underline">
+                          {link.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </Wrapper>
+              <Wrapper variant="prose">
+                <h3>Transcript</h3>
+                <ul>
+                  {podcast.transcript.map((entry) => (
+                    <li key={entry.speaker + entry.text}>
+                      <strong>{entry.speaker}:</strong> {entry.text}
+                    </li>
+                  ))}
+                </ul>
+              </Wrapper>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
