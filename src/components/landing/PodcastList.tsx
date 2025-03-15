@@ -1026,12 +1026,11 @@ function PodcastItem({
   podcast: PodcastType;
 }) {
   return (
-    <div
-      key={index}
-      className="group"
-      onClick={() => togglePodcastDetails(index)}
-    >
-      <div className="grid grid-cols-4 md:grid-cols-6 gap-2 md:gap-4 font-serif py-4 cursor-pointer items-center text-black dark:text-neutral-400">
+    <div key={index} className="group">
+      <div
+        onClick={() => togglePodcastDetails(index)}
+        className="grid grid-cols-4 md:grid-cols-6 gap-2 md:gap-4 font-serif py-4 cursor-pointer items-center text-black dark:text-neutral-400"
+      >
         <div>
           <Text tag="p" variant="textBase" className="italic text-neutral-500 ">
             {podcast.date}
