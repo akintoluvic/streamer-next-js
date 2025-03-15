@@ -1120,9 +1120,11 @@ function NotesAndTranscripts({
   index: number;
   podcast: PodcastType;
 }) {
+  const currentModal = useRef<HTMLDivElement>(null);
   return (
     <div
       id={`modal-${index}`}
+      ref={currentModal}
       className="fixed inset-0 z-50 bg-base-light/10 dark:bg-neutral-900/80 overflow-y-auto scrollbar-hide h-full w-full hidden opacity-0 transition-opacity duration-300 ease-in-out"
     >
       <div className="absolute top-12 left-0 right-0 max-w-3xl mx-auto bg-base-medium dark:bg-neutral-900 shadow ring ring-neutral-200 dark:ring-neutral-800 transition-all duration-300 ease-in-out transform translate-y-full">
