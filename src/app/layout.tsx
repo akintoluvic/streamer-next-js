@@ -7,12 +7,15 @@ import { ThemeProvider } from "@/components/theme/theme-provider";
 const inter = Inter({
   subsets: ["latin"],
   display: "swap",
+  variable: "--font-inter",
 });
 
 const instrument = Instrument_Serif({
   subsets: ["latin"],
   display: "swap",
   weight: "400",
+  variable: "--font-instrument",
+  style: ["normal", "italic"],
 });
 
 export const metadata: Metadata = {
@@ -56,10 +59,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${inter.className} ${instrument.className} bg-background p-8`}
-      >
+    <html
+      lang="en"
+      className={`${inter.variable} ${instrument.variable}`}
+      suppressHydrationWarning
+    >
+      <body className={`bg-background p-8`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

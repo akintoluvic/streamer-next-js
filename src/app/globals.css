@@ -6,8 +6,8 @@
 
 @theme inline {
   /* Typography */
-  --font-serif: Instrument Serif, serif;
-  --font-sans: Inter, sans-serif;
+  --font-serif: var(--font-instrument), serif;
+  --font-sans: var(--font-inter), sans-serif;
   /* Colors */
   --color-base-light: #eeede8;
   --color-base-medium: #f7f7f5;
@@ -95,7 +95,7 @@
   --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(0.922 0 0);
   --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
+  --secondary: oklch(94.55% 0.0067 97.35);
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.269 0 0);
   --muted-foreground: oklch(0.708 0 0);
