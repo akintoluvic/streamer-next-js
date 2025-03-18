@@ -1064,12 +1064,14 @@ function PodcastItem({
             </Text>
             <div className="mt-8">
               <div className="flex">
-                <button
-                  id={`openModal-${index}`}
-                  className="text-xs h-10 bg-base-medium dark:bg-neutral-900 dark:text-white flex items-center gap-4 text-black rounded-full px-6"
-                >
-                  Read notes and Transcript <span>→</span>
-                </button>
+                <NotesAndTranscripts index={index} podcast={podcast}>
+                  <Button
+                    id={`openModal-${index}`}
+                    className="text-xs h-10 cursor-pointer bg-base-medium dark:bg-neutral-900 dark:text-white flex items-center gap-4 text-black rounded-full px-6"
+                  >
+                    Read notes and Transcript <span>→</span>
+                  </Button>
+                </NotesAndTranscripts>
               </div>
               <div className="mt-12">
                 <Text
@@ -1107,96 +1109,123 @@ function PodcastItem({
           </div>
         </div>
       </div>
-      <NotesAndTranscripts index={index} podcast={podcast} />
     </div>
   );
 }
 
+// "use client";
+
+import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+
 function NotesAndTranscripts({
   index,
   podcast,
+  children,
 }: {
   index: number;
   podcast: PodcastType;
+  children: React.ReactNode;
 }) {
-  const currentModal = useRef<HTMLDivElement>(null);
   return (
-    <div
-      id={`modal-${index}`}
-      ref={currentModal}
-      className="fixed inset-0 z-50 bg-base-light/10 dark:bg-neutral-900/80 overflow-y-auto scrollbar-hide h-full w-full hidden opacity-0 transition-opacity duration-300 ease-in-out"
-    >
-      <div className="absolute top-12 left-0 right-0 max-w-3xl mx-auto bg-base-medium dark:bg-neutral-900 shadow ring ring-neutral-200 dark:ring-neutral-800 transition-all duration-300 ease-in-out transform translate-y-full">
-        <button
-          id={`closeModal-${index}`}
-          className="absolute top-8 right-8 text-xs text-black dark:text-neutral-400"
-        >
-          Close
-        </button>
-        <div className="p-8 lg:p-12">
-          <div className="flex items-center gap-2 texrt-black dark:text-neutral-400">
-            <Text tag="p" variant="textBase" className="font-serif italic">
-              <span>{podcast.date}</span>
-            </Text>
-            <span>·</span>
-            <Text tag="p" variant="textBase" className="font-serif ">
-              <span>{podcast.title}</span>
-            </Text>
-            <span>·</span>
-            <Text tag="p" variant="textBase" className="font-serif italic">
-              <span>{podcast.category}</span>
-            </Text>
-            <span>·</span>
-            <Text tag="p" variant="textBase" className="font-serif italic">
-              <span>{podcast.duration}</span>
-            </Text>
-          </div>
-          <div className="grid grid-cols-1 mt-12 lg:grid-cols-2 gap-12">
-            <Wrapper variant="prose">
-              <div>
-                <h3>Topics</h3>
+    <Sheet>
+      <SheetTrigger asChild>{children}</SheetTrigger>
+      <SheetContent
+        side={"bottom"}
+        className="h-[calc(100%-3rem)] md:top-12 overflow-y-scroll max-w-3xl mx-auto bg-base-medium dark:bg-neutral-900 shadow ring ring-neutral-200 dark:ring-neutral-800 transition-all duration-300 ease-in-out transform"
+      >
+        <SheetHeader className="sr-only">
+          <SheetTitle>{podcast.title}</SheetTitle>
+          <SheetDescription>{podcast.title}</SheetDescription>
+        </SheetHeader>
+        <div className=" bg-base-medium dark:bg-neutral-900 shadow ring ring-neutral-200 dark:ring-neutral-800">
+          <SheetClose asChild>
+            <button
+              id={`closeModal-${index}`}
+              className="absolute cursor-pointer top-8 right-8 text-xs text-black dark:text-neutral-400"
+            >
+              Close
+            </button>
+          </SheetClose>
+          <div className="p-8 lg:p-12">
+            <div className="flex items-center gap-2 texrt-black dark:text-neutral-400">
+              <Text tag="p" variant="textBase" className="font-serif italic">
+                <span>{podcast.date}</span>
+              </Text>
+              <span>·</span>
+              <Text tag="p" variant="textBase" className="font-serif ">
+                <span>{podcast.title}</span>
+              </Text>
+              <span>·</span>
+              <Text tag="p" variant="textBase" className="font-serif italic">
+                <span>{podcast.category}</span>
+              </Text>
+              <span>·</span>
+              <Text tag="p" variant="textBase" className="font-serif italic">
+                <span>{podcast.duration}</span>
+              </Text>
+            </div>
+            <div className="grid grid-cols-1 mt-12 lg:grid-cols-2 gap-12">
+              <Wrapper variant="prose">
+                <div>
+                  <h3>Topics</h3>
+                  <ul>
+                    {podcast.topics.map((topic) => (
+                      <li key={topic}>{topic}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h3>Sponsors</h3>
+                  <ul>
+                    {podcast.sponsors.map((sponsor) => (
+                      <li key={sponsor.name}>
+                        <strong>{sponsor.name}</strong> —{sponsor.description}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h3>Links</h3>
+                  <ul>
+                    {podcast.links.map((link) => (
+                      <li key={link.label}>
+                        <a href={link.url} className="hover:underline">
+                          {link.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </Wrapper>
+              <Wrapper variant="prose">
+                <h3>Transcript</h3>
                 <ul>
-                  {podcast.topics.map((topic) => (
-                    <li key={topic}>{topic}</li>
-                  ))}
-                </ul>
-              </div>
-              <div>
-                <h3>Sponsors</h3>
-                <ul>
-                  {podcast.sponsors.map((sponsor) => (
-                    <li key={sponsor.name}>
-                      <strong>{sponsor.name}</strong> —{sponsor.description}
+                  {podcast.transcript.map((entry) => (
+                    <li key={entry.speaker + entry.text}>
+                      <strong>{entry.speaker}:</strong> {entry.text}
                     </li>
                   ))}
                 </ul>
-              </div>
-              <div>
-                <h3>Links</h3>
-                <ul>
-                  {podcast.links.map((link) => (
-                    <li key={link.label}>
-                      <a href={link.url} className="hover:underline">
-                        {link.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </Wrapper>
-            <Wrapper variant="prose">
-              <h3>Transcript</h3>
-              <ul>
-                {podcast.transcript.map((entry) => (
-                  <li key={entry.speaker + entry.text}>
-                    <strong>{entry.speaker}:</strong> {entry.text}
-                  </li>
-                ))}
-              </ul>
-            </Wrapper>
+              </Wrapper>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+
+        {/* <SheetFooter>
+          <SheetClose asChild>
+            <Button type="submit">Save changes</Button>
+          </SheetClose>
+        </SheetFooter> */}
+      </SheetContent>
+    </Sheet>
   );
 }
