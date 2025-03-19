@@ -1067,7 +1067,7 @@ function PodcastItem({
                 <NotesAndTranscripts index={index} podcast={podcast}>
                   <Button
                     id={`openModal-${index}`}
-                    className="text-xs h-10 cursor-pointer bg-base-medium dark:bg-neutral-900 dark:text-white flex items-center gap-4 text-black rounded-full px-6"
+                    className="text-xs h-10 cursor-pointer bg-base-medium hover:bg-base-medium/80 dark:bg-neutral-900 dark:text-white flex items-center gap-4 text-black rounded-full px-6"
                   >
                     Read notes and Transcript <span>→</span>
                   </Button>
