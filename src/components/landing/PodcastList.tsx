@@ -1077,7 +1077,7 @@ function PodcastItem({
                 <Text
                   tag="p"
                   variant="textBase"
-                  className="text-black italic font-serif"
+                  className="text-black dark:text-white italic font-serif"
                 >
                   Listen on
                 </Text>
