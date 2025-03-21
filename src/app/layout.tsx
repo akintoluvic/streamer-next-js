@@ -64,7 +64,7 @@ export default function RootLayout({
       className={`${inter.variable} ${instrument.variable}`}
       suppressHydrationWarning
     >
-      <body className={`bg-background p-8`}>
+      <body className="bg-background p-8">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
