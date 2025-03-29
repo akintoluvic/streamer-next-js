@@ -19,8 +19,8 @@ const instrument = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
-  title: "Your Page Title",
-  description: "A detailed description of your page content.",
+  title: "Streamer Next.js",
+  description: "Streamer template rewritten in Next.js",
   keywords: ["keyword1", "keyword2", "keyword3"],
   alternates: {
     canonical: "https://yoursite.com/current-page",
